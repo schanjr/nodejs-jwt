@@ -8,10 +8,10 @@
 ### installation and setup 
 - yarn install 
 - docker-compose up 
-- yarn run migrate ## migrate required database tables. 
+- yarn run migrate # migrate required database tables. 
 
 ## run 
-- yarn run 
+- yarn run start
 
 
 ## assignments 
@@ -44,11 +44,14 @@ The access token can be expired. Design a new API to allow the client to securel
 - If it is not yet expired, we can explicitly blacklist an existing token, and issue a new one. All future calls to authenticate routes would check 
   the blacklist. 
 - A blacklist middleware is invoked when using /logout route
-- I added a mfa authentication related paths which would issue new JWT tokens if the MFA token provided is correct. f
+- I added a mfa authentication related paths which would issue new JWT tokens if the MFA token provided is correct. 
 
 MFA Demo
-![](readme/mfa_generate.png)
-![](readme/mfa_authenticate.png)
+- Use Google Authenticator or Duo to store the QR
+- ![](readme/mfa_generate.png)
+- Use the QR number for next api call. Remember to also provide the JWT token you had initially which contains the User Id and User Name. 
+- ![](readme/mfa_authenticate.png)
+- This is by no means production ready, and kind of weird issuing JWT tokens in two places. Just for Demo purposes and satisfying the assignment. 
 
 Couple other best practices for token based authentications: 
 - Keep the time to live as short as possible for the tokens but not so short that it inconvenience the users. 
@@ -95,6 +98,7 @@ Server Response
 {
   "count": 100, // sometimes not provided. 
   // sometimes just next id is provided, it does not keep track of previous ids. 
+  //nextId can be named many things such as cursorId, cursor, nextToken, token etc....
   // below is an "ideal" API. 
   "next": "/api/v1/products?limit=10&after=cdef",
   "previous": null,
@@ -135,7 +139,8 @@ client - "/v1/users?offset=0&limit=10"
 ```
 
 #### Mention any third party tools/library you would use 
-- Don't know of any good tools or libraries, but have seen these libraries tightly coupled with famous ORMs.  
+- Don't know of any good tools or libraries in general software programming, but have seen these libraries tightly coupled with famous ORMs. Good 
+  solutions are usually DB related changes, we could look into mysql, or pg related tools. 
 
 
 
